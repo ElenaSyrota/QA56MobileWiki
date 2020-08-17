@@ -3,8 +3,11 @@ package tests;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import pages.CurrentArticlePageHelper;
+import pages.SearchPageHelper;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,8 +15,9 @@ import java.net.URL;
 public class TestBase {
 
     public AppiumDriver driver;
+    SearchPageHelper searchPage;
 
-    @BeforeMethod
+    @BeforeMethod (alwaysRun = true)
     public void setUp() throws MalformedURLException {
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -26,10 +30,13 @@ public class TestBase {
         capabilities.setCapability("automationName","Uiautomator1");
         driver = new AndroidDriver(new URL("http://127.0.01:4723/wd/hub"),capabilities);
 
+        searchPage = PageFactory.initElements(driver, SearchPageHelper.class);
+        searchPage.waitUntilPageIsLoaded();
+        searchPage.rotateScreenPORTRAIT();
+
     }
 
-
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         driver.quit();
     }

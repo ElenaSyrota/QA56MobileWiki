@@ -38,9 +38,8 @@ public class SearchPageHelper extends PageBase {
     }
 
     public SearchPageHelper enterSearchText(String text) {
-        System.out.println("x: "+searchField.getLocation().x);
-        System.out.println("y: "+searchField.getLocation().y);
-
+        System.out.println("x: " + searchField.getLocation().x);
+        System.out.println("y: " + searchField.getLocation().y);
         searchField.click();
         waitUntilElementIsClickable(searchInput,10);
         searchInput.sendKeys(text);
@@ -66,19 +65,17 @@ public class SearchPageHelper extends PageBase {
         return this;
     }
 
-    public String xPathArticleName(String article){
+    private String xPathArticleName(String article){
         return "//*[@text='" + article +"']";
     }
 
     public void openArticleMenu(String article) {
-        AppiumDriver appDriver = (AppiumDriver) (driver);
+        AppiumDriver appDriver = (AppiumDriver)(driver);
         TouchAction action = new TouchAction(appDriver);
-
-        WebElement articleName  =  driver.findElement(By.xpath(xPathArticleName(article)));
-
-        int x = articleName.getLocation().x + 5;
-        int y = articleName.getLocation().y + 3;
-
+        WebElement articleName = driver
+                .findElement(By.xpath(xPathArticleName(article)));
+        int x = articleName.getLocation().x+3;
+        int y = articleName.getLocation().y+3;
         action.longPress(PointOption.point(x,y))
                 .waitAction()
                 .release()
@@ -87,18 +84,15 @@ public class SearchPageHelper extends PageBase {
     }
 
     public void closeArticleMenu() {
-        AppiumDriver appDriver = (AppiumDriver) (driver);
+        AppiumDriver appDriver = (AppiumDriver)(driver);
         TouchAction action = new TouchAction(appDriver);
-
-        WebElement menuOpen  =  driver.findElement(By.xpath("//*[@text='Open']"));
-
-        int x = (int)(menuOpen.getLocation().x * 0.5);
+        WebElement menuOpen = driver
+                .findElement(By.xpath("//*[@text='Open']"));
+        int x = (int)(menuOpen.getLocation().x *0.5);
         int y = menuOpen.getLocation().y;
-
         action.press(PointOption.point(x,y))
                 .waitAction()
                 .release()
                 .perform();
-
     }
 }

@@ -7,41 +7,18 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+
+import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 
 public class PageBase {
     WebDriver driver;
-   // public static LogLog4j log4j = new LogLog4j();
 
     public PageBase(WebDriver driver) {
         this.driver = driver;
     }
 
-    public String getTitle(){
-        return driver.getTitle();
-    }
-
-    public void swipeUp() throws InterruptedException {
-        AppiumDriver appDriver = (AppiumDriver) driver;
-        TouchAction action = new TouchAction(appDriver);
-
-        Dimension size = driver.manage().window().getSize();
-        int x1 = (int) (size.width * 0.5);
-        int y1 = (int) (size.height * 0.8);
-        int y2 = (int) (size.height * 0.2);
-        action.press(PointOption.point(x1, y1)).waitAction()
-                .moveTo(PointOption.point(x1, y2)).release().perform();
-        Thread.sleep(5000);
-
-    }
-    public void swipeUpToElement(By by, int maxTimes) throws InterruptedException {
-        int counter = 0;
-        while (driver.findElements(by).size() == 0  && counter<maxTimes){
-            swipeUp();
-            counter++;
-        }
-    }
 
     public void waitUntilElementIsClickable(By locator, int time) {
         try {
@@ -171,14 +148,63 @@ public class PageBase {
         textField.clear();
         textField.sendKeys(value);
     }
+
     public void scrollDown(int x, int y) {
-        JavascriptExecutor js= (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy("+x+","+y+")");
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(" + x + "," + y + ")");
     }
 
-    public void scrollDownToViewElement(WebElement element)  {
+    public void scrollDownToViewElement(WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        //Thread.sleep(4000);
-        js.executeScript("arguments[0].scrollIntoView() ;", element);
+
+        js.executeScript("arguments[0].scrollIntoView();", element);
+
+    }
+    public void swipeUpToElement(By by,int maxTimes) {
+        int counter = 0;
+        while(driver.findElements(by).size()==0&&counter<maxTimes){
+            swipeUp();
+            counter++;
+        }
+    }
+    public void swipeUp() {
+        AppiumDriver appDriver = (AppiumDriver)(driver);
+        TouchAction action = new TouchAction(appDriver);
+        Dimension size = driver.manage().window().getSize();
+        int x1 = (int)(size.width*0.5);
+        int y1 = (int)(size.height*0.8);
+        int y2 = (int)(size.height*0.2);
+        action.press(PointOption.point(x1,y1))
+                .waitAction()
+                .moveTo(PointOption.point(x1,y2))
+                .release()
+                .perform();
+    }
+    public void swipeLeft(int y) {
+        AppiumDriver appDriver = (AppiumDriver)(driver);
+        TouchAction action = new TouchAction(appDriver);
+        Dimension size = driver.manage().window().getSize();
+        int x1 = (int)(size.width*0.8);
+        int x2 = (int)(size.width*0.2);
+        action.press(PointOption.point(x1,y))
+                .waitAction()
+                .moveTo(PointOption.point(x2,y))
+                .release()
+                .perform();
+    }
+    public void rotateScreenLandscape() {
+        AppiumDriver appDriver = (AppiumDriver)(driver);
+        appDriver.rotate(ScreenOrientation.LANDSCAPE);
+
+    }
+    public void rotateScreenPORTRAIT() {
+        AppiumDriver appDriver = (AppiumDriver)(driver);
+        appDriver.rotate(ScreenOrientation.PORTRAIT);
+
+    }
+
+    public void runBackGround(int sec){
+        AppiumDriver appDriver = (AppiumDriver)(driver);
+        appDriver.runAppInBackground(Duration.ofSeconds(sec));
     }
 }
