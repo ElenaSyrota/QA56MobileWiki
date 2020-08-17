@@ -3,10 +3,7 @@ package pages;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.offset.PointOption;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -58,11 +55,42 @@ public class CurrentArticlePageHelper extends PageBase {
         return this;
     }
 
-    public void swipeToFooter() throws InterruptedException {
-        swipeUpToElement(By.xpath("//*[@text ='View page in browser']"), 20);
+    public void swipeUp() {
+        AppiumDriver appDriver = (AppiumDriver)(driver);
+        TouchAction action = new TouchAction(appDriver);
+        Dimension size = driver.manage().window().getSize();
+        int x1 = (int)(size.width*0.5);
+        int y1 = (int)(size.height*0.8);
+        int y2 = (int)(size.height*0.2);
+        action.press(PointOption.point(x1,y1))
+                .waitAction()
+                .moveTo(PointOption.point(x1,y2))
+                .release()
+                .perform();
     }
 
-    public boolean isEndOfArticle() {
-        return driver.findElements(By.id("org.wikipedia:id/read_more_header")).size()>0;
+    public void swipeToFooter() {
+        swipeUpToElement(By
+                .xpath("//*[@text='View page in browser']"),20);
     }
+
+
+
+    public boolean isEndOfArticle() {
+        return driver
+                .findElements(By.id("org.wikipedia:id/read_more_header")).size()>0;
+    }
+
+    public void rotateScreenLandscape() {
+        AppiumDriver appDriver = (AppiumDriver)(driver);
+        appDriver.rotate(ScreenOrientation.LANDSCAPE);
+
+    }
+    public void rotateScreenPORTRAIT() {
+        AppiumDriver appDriver = (AppiumDriver)(driver);
+        appDriver.rotate(ScreenOrientation.PORTRAIT);
+
+    }
+
+
 }

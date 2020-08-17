@@ -7,9 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="QA56MobileWiki" />
+        <module name="java-testng-appium-android" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="java-testng-appium-android" target="1.8" />
       <module name="QA56MobileWiki" target="1.8" />
     </bytecodeTargetLevel>
   </component>
